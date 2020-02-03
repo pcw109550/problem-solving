@@ -1,6 +1,9 @@
 *
 !/Baekjoon/
+!/LeetCode/
 !*.c
 !*.cpp
 !*.py
+!.gitignore
 tempCodeRunnerFile.cpp
+
