@@ -1,19 +1,19 @@
 #include <stdio.h>
+int input[100001];
+int D[100001];
+int max(int a, int b) {
+    return a > b ? a : b;
+}
 
 int main() {
-    int max = -1, acc = 0, T, temp; scanf("%d", &T); int pos = 0, negmax = -1001;
-    for (int i = 0; i < T; i++) {
-        scanf("%d", &temp);
-        if (temp < 0) {
-            if (negmax < temp) { negmax = temp; }
-            if (max < acc) { max = acc; } acc = 0;
-        } else {
-            pos = 1;
-            acc += temp;
-        }
+    int N; scanf("%d", &N);
+    for (int i = 1; i <= N; i++) {
+        scanf("%d", &input[i]);
     }
-    if (pos == 1) { if (max < acc) { max = acc; } }
-    else { max = negmax; }
-    printf("%d", max);
-    // WRONG..
+    D[1] = input[1]; int result = D[1];
+    for (int k = 2; k <= N; k++) {
+        D[k] = max(0, D[k - 1]) + input[k];
+        if (result < D[k]) { result = D[k]; }
+    }
+    printf("%d", result);
 }
