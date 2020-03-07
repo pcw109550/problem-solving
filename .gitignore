@@ -5,5 +5,5 @@
 !*.cpp
 !*.py
 !.gitignore
-tempCodeRunnerFile.cpp
+tempCodeRunnerFile.*
 
