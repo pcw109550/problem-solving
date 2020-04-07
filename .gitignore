@@ -1,9 +1,11 @@
 *
 !/Baekjoon/
 !/LeetCode/
+!/Misc/
 !*.c
 !*.cpp
 !*.py
 !.gitignore
+!*.md
 tempCodeRunnerFile.*
 
