@@ -45,7 +45,7 @@ int main(void) {
             tie(cost, v1, v2) = edge[i];
             if (Union(v1, v2)) { continue; }
             Min += cost;
-            if (cnt == M - 1) { break; }
+            if (++cnt == M - 1) { break; }
         }
         cout << Max - Min << '\n';
     }

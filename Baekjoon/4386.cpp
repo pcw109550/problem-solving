@@ -47,7 +47,7 @@ int main(void) {
         tie(cost, v1, v2) = edge[i];
         if (Union(v1, v2)) { continue; }
         result += cost;
-        if (cnt == N - 1) { break; }
+        if (++cnt == N - 1) { break; }
     }
     cout << result;
 }
