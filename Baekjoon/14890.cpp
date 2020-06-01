@@ -27,7 +27,7 @@ int main(void) {
             }
             if (base == input[i][j] + 1) {
                 for (int k = j; k < j + L; k++) {
-                    if (k > N || input[i][k] != input[i][j]) { flag = false; break; }  
+                    if (k >= N || input[i][k] != input[i][j]) { flag = false; break; }  
                 }
                 base = input[i][j];
             }
@@ -52,7 +52,7 @@ int main(void) {
             }
             if (base == input[j][i] + 1) {
                 for (int k = j; k < j + L; k++) {
-                    if (k > N || input[k][i] != input[j][i]) { flag = false; break; }  
+                    if (k >= N || input[k][i] != input[j][i]) { flag = false; break; }  
                 }
                 base = input[j][i];
             }
