@@ -2,10 +2,12 @@
 !/Baekjoon/
 !/LeetCode/
 !/Misc/
+!/SWExpertAcademy
 !*.c
 !*.cpp
 !*.py
 !.gitignore
 !*.md
+!.gitkeep
 tempCodeRunnerFile.*
 
