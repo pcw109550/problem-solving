@@ -6,6 +6,7 @@
 !*.c
 !*.cpp
 !*.py
+!*.rb
 !.gitignore
 !*.md
 !.gitkeep
