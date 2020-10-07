@@ -25,24 +25,29 @@ inline void task(int V, int E) {
                 if (D[nvertex] >= distance + weight) {
                     if (D[nvertex] > distance + weight) {
                         path[nvertex].clear();
+                        D[nvertex] = distance + weight;
+                        PQ.push({D[nvertex], nvertex});
                     }
                     path[nvertex].push_back(vertex);
-                    D[nvertex] = distance + weight;
-                    PQ.push({D[nvertex], nvertex});
                 }
             }
-        }
+        }  
     }
+
     // Remove shortest paths
     queue<int> Q; Q.push(end); bool visited[V] = {}; visited[end] = true;
     while (!Q.empty()) {
         int cur = Q.front(); Q.pop();
         for (auto it : path[cur]) {
-            if (!visited[it]) { Q.push(it); }
+            if (!visited[it]) {
+                Q.push(it);
+                visited[it] = true;
+            }
             edge[it].erase(remove_if(edge[it].begin(), edge[it].end(),
                     [cur](pair<int, int> x){ return x.second == cur; }), edge[it].end());
         }
     }
+    
     // Run dijkstra again O(E * log(E))
     int D2[V]; fill(D2, D2 + V, INF);
     D2[start] = 0; PQ.push({0, start});
@@ -57,10 +62,10 @@ inline void task(int V, int E) {
                 if (D2[nvertex] >= distance + weight) {
                     if (D2[nvertex] > distance + weight) {
                         path[nvertex].clear();
+                        D2[nvertex] = distance + weight;
+                        PQ.push({D2[nvertex], nvertex});
                     }
                     path[nvertex].push_back(vertex);
-                    D2[nvertex] = distance + weight;
-                    PQ.push({D2[nvertex], nvertex});
                 }
             }
         }
