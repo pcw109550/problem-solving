@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define FIELD 1000
+#define FIELD 10000
+
+vector<vector<int> > base {{1, 1}, {1, 0}};
 
 template <class T, class Q>
 struct Mat {
@@ -58,15 +60,19 @@ struct Mat {
     }
 };
 
+void task(int n) {
+    Mat<int, int> M(base);
+    M = M ^ n;
+    cout << M(1, 0) << endl;
+}
+
 int main(void) {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    // Matrix Power
-    int N; long long r; cin >> N >> r;
-    vector<vector<int> > m(N, vector<int>(N));
-    for (int i = 0; i < N; i++)
-        for (int j = 0; j < N; j++)
-            cin >> m[i][j];
-    Mat<int, long long> M(m);
-    M = M ^ r;
-    cout << M;
+    while (true) {
+        int t;
+        cin >> t;
+        if (t == -1)
+            break;
+        task(t);
+    }
 }

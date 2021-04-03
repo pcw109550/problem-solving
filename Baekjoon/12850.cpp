@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define FIELD 1000
+#define FIELD 1000000007
 
 template <class T, class Q>
 struct Mat {
@@ -60,13 +60,20 @@ struct Mat {
 
 int main(void) {
     ios::sync_with_stdio(false); cin.tie(nullptr);
-    // Matrix Power
-    int N; long long r; cin >> N >> r;
-    vector<vector<int> > m(N, vector<int>(N));
-    for (int i = 0; i < N; i++)
-        for (int j = 0; j < N; j++)
-            cin >> m[i][j];
-    Mat<int, long long> M(m);
-    M = M ^ r;
-    cout << M;
+    int D; cin >> D;
+    Mat<long long, int> M(8);
+    vector<vector<int> > path;
+    path.push_back({1, 3});
+    path.push_back({0, 2, 3});
+    path.push_back({1, 3, 4, 5});
+    path.push_back({0, 1, 2, 5});
+    path.push_back({2, 5, 6});
+    path.push_back({2, 3, 4, 7});
+    path.push_back({4, 7});
+    path.push_back({5, 6});
+    for (int i = 0; i < 8; i++)
+        for (auto j : path[i])
+            M(i, j) = 1;
+    M = M ^ D;
+    cout << M(0, 0);
 }
