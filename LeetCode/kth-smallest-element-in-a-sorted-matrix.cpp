@@ -1,24 +1,28 @@
-// 378. Kth Smallest Element in a Sorted Matrix
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <queue>
+using namespace std;
 
 class Solution {
-    public:
-        int kthSmallest(std::vector<std::vector<int> >& matrix, int k) {
-            // O(M * N * log(K))
-            std::priority_queue<int> Q;
-            int M = matrix.size(), N = matrix[0].size();
-            for (int i = 0; i < M; i++)
-                for (int j = 0; j < N; j++) {
-                    Q.push(matrix[i][j]);
-                    if (Q.size() > k)
-                        Q.pop();
-                }
-            return Q.top();
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        // Time O(N * log(N) * log(M)) Space O(1)
+        int N = matrix.size();
+        int result = matrix[0][0];
+        int lo = matrix[0][0], hi = matrix[N - 1][N - 1];
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            int cnt = N * N;
+            for (int i = 0; i < N; i++) {
+                auto it = upper_bound(matrix[i].begin(), matrix[i].end(), mid);
+                cnt -= matrix[i].end() - it;
+            }
+            if (k <= cnt)
+                hi = mid;
+            else
+                lo = mid + 1;
         }
+        result = lo;
+        return result;
+    }
 };
-
-int main(void) {
-    Solution s;
-}
