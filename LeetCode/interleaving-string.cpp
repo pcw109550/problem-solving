@@ -1,40 +1,27 @@
-// 97. Interleaving String
 #include <iostream>
 #include <string>
-#include <utility>
-#include <unordered_set>
+#include <vector>
+using namespace std;
 
 class Solution {
-    public:
-        bool isInterleave(std::string s1, std::string s2, std::string s3) {
-            // Time O(N ** 2) Space O(N)
-            int N1 = s1.size(), N2 = s2.size();
-            if (N1 + N2 != s3.size())
-                return false;
-            std::unordered_set<int> S;
-            for (int i = 0; i < s3.size(); i++) {
-                std::unordered_set<int> temp;
-                if (i == 0) {
-                    if (0 < N1 && s1[0] == s3[0])
-                        temp.insert(1 * 101 + 0);
-                    if (0 < N2 && s2[0] == s3[0])
-                        temp.insert(0 * 101 + 1);
-                } else {
-                    for (auto it : S) {
-                        int p1 = it / 101;
-                        int p2 = it % 101;
-                        if (p1 < N1 && s1[p1] == s3[i])
-                            temp.insert((p1 + 1) * 101 + p2);
-                        if (p2 < N2 && s2[p2] == s3[i])
-                            temp.insert(p1 * 101 + (p2 + 1));
-                    }
-                }
-                S = temp;
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // O(M * N)
+        int M = s1.size(), N = s2.size(), K = s3.size();
+        if (M + N < K || M + N > K)
+            return false;
+        vector<vector<bool> > D(M + 1, vector<bool>(N + 1, false));
+        D[0][0] = true;
+        for (int i = 1; i <= K; i++) {
+            for (int j = 0; j <= i; j++) {
+                int x = j, y = i - j;
+                if (x < 0 || x > M || y < 0 || y > N)
+                    continue;
+                bool a = x >= 1 ? D[x - 1][y] : false;
+                bool b = y >= 1 ? D[x][y - 1] : false;
+                D[x][y] = (a && (s1[x - 1] == s3[x + y - 1])) || (b && (s2[y - 1] == s3[x + y - 1]));
             }
-            return !S.empty() || s3.size() == 0;
         }
+        return D[M][N];
+    }
 };
-
-int main(void) {
-    Solution s;
-}
