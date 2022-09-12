@@ -1,0 +1,5 @@
+# Write your MySQL query statement below
+SELECT t2.id
+FROM Weather t1
+INNER JOIN Weather t2
+ON TIMESTAMPDIFF(DAY, t1.recordDate, t2.recordDate) = 1 AND t1.temperature < t2.temperature;

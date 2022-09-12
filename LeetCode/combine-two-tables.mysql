@@ -1,0 +1,11 @@
+# Write your MySQL query statement below
+SELECT firstName, lastName,
+(
+    SELECT city FROM Address
+    WHERE Address.personId = Person.personId
+) as 'city',
+(
+    SELECT state FROM Address
+    WHERE Address.personId = Person.personId
+) as 'state'
+FROM Person;

@@ -1,67 +1,33 @@
-// 5. Longest Palindromic Substring
+#include <algorithm>
 #include <iostream>
-#include <string>
+#include <vector>
+using namespace std;
 
 class Solution {
-    public:
-        std::string longestPalindrome(std::string s) {
-            // Time O(N ** 2) Space O(1)
-            int N = s.length();
-            if (N == 0)
-                return std::string ("");
-            int start = 0, end = 0;
-            for (int i = 0; i < N; i++) {
-                int len1 = expand(s, i, i);
-                int len2 = expand(s, i, i + 1);
-                int len = std::max(len1, len2);
-                if (len > end - start) {
-                    start = i - (len - 1) / 2;
-                    end = i + len / 2;
-                }                
-            }
-            return s.substr(start, end - start + 1);
-        }
-
-        int expand(std::string s, int left, int right) {
-            int L = left, R = right;
-            int N = s.length();
-            while (L >= 0 && R < N && s[L] == s[R]) {
-                L--; R++;
-            }
-            return R - L - 1;
-        }
-};
-
-class Solution2 {
-    public:
-        std::string longestPalindrome(std::string s) {
-            // Time O(N ** 2) Space O(N ** 2)
-            int N = s.length(), Max = 1, idx = 0;
-            if (N == 0)
-                return std::string ("");
-            bool is_palindrome[1000][1000];
-            std::fill(is_palindrome[0], is_palindrome[0] + 1000 * 1000, false);
-            for (int i = 1; i <= N; i++) {
-                for (int j = 0; j <= N - i; j++) {
-                    if (i == 1) {
-                        is_palindrome[j][j] = true;
-                    } else {
-                        if (s[j] != s[j + i - 1])
-                            continue;
-                        if (i == 2 || is_palindrome[j + 1][j + i - 2]) {
-                            is_palindrome[j][j + i - 1] = true;
-                            idx = j; Max = i;
+public:
+    string longestPalindrome(string s) {
+        // O(N ** 2)
+        int N = s.size();
+        int result_idx = 0, result_max = 0;
+        vector<vector<bool> > D(N, vector<bool> (N, false));
+        for (int x = N - 1; x >= 0; x--) {
+            for (int y = 0; y <= x; y++) {
+                int i = y;
+                int j = y + N - 1 - x;
+                bool is_palin = false;
+                if (s[i] == s[j]) {
+                    if (i == j || i + 1 == j || D[i + 1][j - 1]) {
+                        D[i][j] = true;
+                        int delta = j - i + 1;
+                        if (result_max < delta) {
+                            result_max = delta;
+                            result_idx = i;
                         }
                     }
                 }
             }
-            return s.substr(idx, Max);
         }
+        string result = s.substr(result_idx, result_max);
+        return result; 
+    }
 };
-
-int main(void) {
-    Solution s;
-    std::string input = "babad";
-    auto result = s.longestPalindrome(input);
-    std::cout << result;
-}
