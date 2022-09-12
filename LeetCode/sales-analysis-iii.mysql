@@ -1,0 +1,16 @@
+# Write your MySQL query statement below
+
+SELECT DISTINCT T.product_id, U.product_name 
+FROM (
+    SELECT product_id
+    FROM Sales
+    WHERE product_id NOT IN (
+        SELECT product_id
+        FROM Sales
+        WHERE sale_date 
+        NOT BETWEEN CAST('2019-01-01' AS DATE)
+        AND CAST('2019-03-31' AS DATE)
+    )
+) AS T
+INNER JOIN Product as U
+ON U.product_id = T.product_id;
