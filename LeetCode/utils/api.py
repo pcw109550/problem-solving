@@ -43,7 +43,7 @@ def get_problem_data(
     return source, extension, question_id
 
 
-def get_problem_frontend_question_id(problem_name: str) -> int:
+def get_problem_frontend_id(problem_name: str) -> int:
     file_name = f"{problem_name}_frontend_id.json"
     cmd = f"""curl --output {file_name} --compressed -s -k -X $'POST' """
     cmd += f""" -H $'Content-Length: {221 - len("string-to-integer-atoi") + len(problem_name)}' """
@@ -55,5 +55,5 @@ def get_problem_frontend_question_id(problem_name: str) -> int:
     assert os.system(cmd) == 0
     with open(file_name) as f:
         result = json.loads(f.read())
-    problem_frontend_question_id = int(result["data"]["question"]["questionFrontendId"])
-    return problem_frontend_question_id
+    problem_frontend_id = int(result["data"]["question"]["questionFrontendId"])
+    return problem_frontend_id
