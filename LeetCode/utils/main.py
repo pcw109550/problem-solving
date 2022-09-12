@@ -4,14 +4,14 @@ from typing import Dict, List, Tuple
 
 import git
 
-from api import get_problem_data, get_submission_list
+from api import get_problem_data, get_problem_frontend_id, get_submission_list
 from parse import Problem, commit_idx, database
 
 logging.basicConfig(level=logging.INFO)
 repo = git.Repo("../../")
 
 PROBLEM_PER_COMMIT = 10
-SLEEP_INTERVAL = 1
+SLEEP_INTERVAL = 1.5
 
 
 def get_accepted_submission_info(submission_list: Dict) -> Tuple[int, str]:
@@ -43,7 +43,8 @@ def get_problem_metadatas(problems: List[Problem]) -> List:
             submission_id, problem.name, lang
         )
         complexity = get_source_complexity(source)
-        problem_metadata = extension, question_id, complexity
+        question_frontend_id = get_problem_frontend_id(problem.name)
+        problem_metadata = extension, question_id, question_frontend_id, complexity
         problem_metadatas.append(problem_metadata)
         logging.info(
             f"{idx + 1}/{problem_list_length}: {problem}: {str(problem_metadata)}"
@@ -75,18 +76,20 @@ def format_commit_msg(question_ids: List[int], metadata_msgs: List[str]) -> str:
 
 
 if __name__ == "__main__":
-    problems = database[commit_idx : commit_idx + 1]
+    problems = database[commit_idx:]
     problem_metadatas = get_problem_metadatas(problems)
 
     for i in range(0, len(problems), PROBLEM_PER_COMMIT):
         question_ids, source_file_names, metadata_msgs = [], [], []
         for j in range(i, min(i + PROBLEM_PER_COMMIT, len(problems))):
             problem: Problem = problems[j]
-            extension, question_id, complexity = problem_metadatas[j]
-            question_ids.append(question_id)
+            extension, _, question_frontend_id, complexity = problem_metadatas[j]
+            question_ids.append(question_frontend_id)
             source_file_name = format_source_file_name(problem.name, extension)
             source_file_names.append(source_file_name)
-            metadata_msg = format_metadata_msg(question_id, problem.name, complexity)
+            metadata_msg = format_metadata_msg(
+                question_frontend_id, problem.name, complexity
+            )
             metadata_msgs.append(metadata_msg)
 
         commit_msg = format_commit_msg(question_ids, metadata_msgs)

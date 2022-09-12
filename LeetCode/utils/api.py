@@ -41,3 +41,19 @@ def get_problem_data(
     with open(f"../{file_name}", "w") as f:
         f.write(source)
     return source, extension, question_id
+
+
+def get_problem_frontend_id(problem_name: str) -> int:
+    file_name = f"{problem_name}_frontend_id.json"
+    cmd = f"""curl --output {file_name} --compressed -s -k -X $'POST' """
+    cmd += f""" -H $'Content-Length: {221 - len("string-to-integer-atoi") + len(problem_name)}' """
+    cmd += cred
+    payload = r"""--data-binary $'{\"operationName\":\"questionData\",\"variables\":{\"titleSlug\":\"string-to-integer-atoi\"},\"query\":\"query questionData($titleSlug: String!) {\\n  question(titleSlug: $titleSlug) {\\n    questionId\\n    questionFrontendId\\n }\\n}\\n\"}' """
+    payload = payload.replace("string-to-integer-atoi", problem_name)
+    cmd += payload
+    cmd += """    $'https://leetcode.com/graphql' """
+    assert os.system(cmd) == 0
+    with open(file_name) as f:
+        result = json.loads(f.read())
+    problem_frontend_id = int(result["data"]["question"]["questionFrontendId"])
+    return problem_frontend_id
