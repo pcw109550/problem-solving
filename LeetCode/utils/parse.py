@@ -1,7 +1,7 @@
 import csv
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 
 DATABASE = "PS - LeetCode.csv"
 INDICATOR = "Commit starts from here"
@@ -44,6 +44,28 @@ def init_database() -> List:
             problem = parse_problem(row)
             problems.append(problem)
     return problems, commit_idx
+
+
+def parse_source(html: str) -> str:
+    start_idx = html.find("submissionCode:") + len("submissionCode: '")
+    end_idx = html.find("editCodeUrl") - 5
+    assert start_idx != -1 and end_idx != -1
+    source = html[start_idx:end_idx].encode("ascii").decode("unicode-escape")
+    return source
+
+
+def parse_question_id(html: str) -> int:
+    start_idx = html.find("questionId:") + len("questionId: '")
+    end_idx = html.find("submissionId") - 5
+    assert start_idx != -1 and end_idx != -1
+    question_id = int(html[start_idx:end_idx])
+    return question_id
+
+
+def parse_html(html: str) -> Tuple[str, int]:
+    source = parse_source(html)
+    question_id = parse_question_id(html)
+    return source, question_id
 
 
 database, commit_idx = init_database()
