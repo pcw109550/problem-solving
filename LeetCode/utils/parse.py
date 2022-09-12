@@ -4,7 +4,8 @@ from enum import Enum
 from typing import List, Tuple
 
 DATABASE = "PS - LeetCode.csv"
-INDICATOR = "Commit starts from here"
+COMMIT_INDICATOR = "Commit starts from here"
+END_INDICATOR = "Failed"
 
 
 class Difficulty(Enum):
@@ -37,8 +38,10 @@ def init_database() -> List:
     with open(DATABASE, newline="") as db:
         db_reader = csv.reader(db, delimiter=",")
         for idx, row in enumerate(db_reader):
-            if INDICATOR in row:
+            if COMMIT_INDICATOR in row:
                 commit_idx = idx
+            if END_INDICATOR in row:
+                break
             if not is_problem(row):
                 continue
             problem = parse_problem(row)
