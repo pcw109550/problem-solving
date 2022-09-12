@@ -16,8 +16,6 @@ class Problem:
     category: str
     name: str
     difficulty: Difficulty
-    url: str = ""
-    complexity: str = ""
 
 
 def is_problem(row: List[str]) -> bool:
