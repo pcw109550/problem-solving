@@ -75,7 +75,7 @@ def format_commit_msg(question_ids: List[int], metadata_msgs: List[str]) -> str:
 
 
 if __name__ == "__main__":
-    problems = database[commit_idx : commit_idx + 1]
+    problems = database[commit_idx:]
     problem_metadatas = get_problem_metadatas(problems)
 
     for i in range(0, len(problems), PROBLEM_PER_COMMIT):
