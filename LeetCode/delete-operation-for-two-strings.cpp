@@ -1,27 +1,25 @@
-// 583. Delete Operation for Two Strings
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
 class Solution {
-    public:
-        int minDistance(std::string word1, std::string word2) {
-            // O(M * N)
-            int M = word1.size(), N = word2.size();
-            int Max = 0;
-            std::vector<std::vector<int> > D (M + 1, std::vector<int> (N + 1, 0));
-            for (int i = 1; i <= M; i++)
-                for (int j = 1; j <= N; j++) {
-                    if (word1[i - 1] == word2[j - 1])
-                        D[i][j] = D[i - 1][j - 1] + 1;
-                    else
-                        D[i][j] = std::max(D[i - 1][j], D[i][j - 1]);
-                    Max = std::max(Max, D[i][j]);
+public:
+    int minDistance(string word1, string word2) {
+        // LCS O(M * N)
+        int M = word1.size(), N = word2.size();
+        int result = 0, cur = 0;
+        vector<vector<int> > D(M, vector<int>(N, 0));
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j++) {
+                if (word1[i] == word2[j])
+                    D[i][j] = ((i >= 1 && j >= 1) ? D[i - 1][j - 1] : 0) + 1;
+                else {
+                    int next = 0;
+                    next = max(next, (i >= 1 && j >= 1) ? D[i - 1][j - 1] : 0);
+                    next = max(next, i >= 1 ? D[i - 1][j] : 0);
+                    next = max(next, j >= 1 ? D[i][j - 1] : 0);
+                    D[i][j] = next;
                 }
-            return M + N - 2 * Max;
+                cur = max(cur, D[i][j]);
+            }
         }
+        result = M + N - 2 * cur;
+        return result;
+    }
 };
-
-int main(void) {
-    Solution s;
-}
